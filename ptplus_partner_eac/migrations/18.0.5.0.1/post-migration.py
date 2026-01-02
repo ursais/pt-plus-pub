@@ -1321,6 +1321,7 @@ def migrate(cr, version):
     _logger.info("Migration of values done.")
 
     # Drop the temporary column
+    return
     try:
         cr.execute(
             """
