@@ -1,12 +1,11 @@
-from odoo import SUPERUSER_ID, api
+from openupgradelib import openupgrade
+
+field_renames = [
+    ("pos.order", "pos_order", "l10n_ptplus_unique_id", "l10n_pt_unique_id"),
+]
 
 
-def migrate(cr, version):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+@openupgrade.migrate()
+def migrate(env, version):
     if "l10n_ptplus_unique_id" in env["pos.order"]._fields:
-        cr.execute(
-            """
-                ALTER TABLE pos_order
-                RENAME COLUMN l10n_ptplus_unique_id TO l10n_pt_unique_id;
-            """
-        )
+        openupgrade.rename_fields(env, field_renames)
