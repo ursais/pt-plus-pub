@@ -23,7 +23,7 @@
                         type="object"
                         string="Compute SDR"
                         help="Compute the SDR / Volta deposit line"
-                        class="btn-link mb-1 px-0"
+                        class="btn-outline-primary"
                         icon="fa-refresh"
                     />
                 </div>
