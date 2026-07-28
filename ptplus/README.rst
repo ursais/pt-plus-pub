@@ -53,6 +53,22 @@ Available soon.
 Changelog
 =========
 
+5.1.4 (2026-07-14)
+~~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- The Payment (multi-way) report no longer registers its printed PDF as a
+  chatter attachment
+
+5.1.3 (2026-07-13)
+~~~~~~~~~~~~~~~~~~~
+
+**Improvement**
+
+- The Invoice/Payment (multi-way) reports only show up in the print menu when
+  the document has a source billing set
+
 5.0.7 (2025-10-26)
 ~~~~~~~~~~~~~~~~~~~
 **FIX**

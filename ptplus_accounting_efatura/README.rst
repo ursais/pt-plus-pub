@@ -55,6 +55,72 @@ Available soon.
 Changelog
 =========
 
+5.9.0 (2026-07-28)
+~~~~~~~~~~~~~~~~~~~
+
+**Improvement**
+
+- When an expense matches an e-fatura record whose vendor bill was already
+  confirmed or belongs to another expense, posting the expense no longer
+  blocks: a separate draft vendor bill is created (keeping the e-fatura
+  reference and per-tax breakdown, but not the e-fatura link) and a note on
+  the bill suggests merging the two bills with the Merge E-Fatura Invoices
+  action.
+
+5.7.0 (2026-07-24)
+~~~~~~~~~~~~~~~~~~~
+
+**Improvement**
+
+- Expenses are now linked to their e-fatura record: the QR scan creates or
+  identifies it right away, and posting the expense reuses the draft vendor
+  bill already created by the e-fatura import (matching by document
+  reference + vendor VAT in any format) instead of creating a duplicate.
+- When the expense has an e-fatura record and no bill exists yet, the vendor
+  bill is created with one line per e-fatura tax line, so multi-rate
+  receipts (e.g. 6% + 23%) get the correct per-tax breakdown.
+- Bills created from expenses carry the pure document reference, so a later
+  e-fatura import links to them instead of creating a new invoice.
+- The expense tax fields are hidden when the expense has an e-fatura record
+  (Portuguese companies only): the real per-tax breakdown lives in the
+  e-fatura record and the single-value expense tax is misleading.
+
+5.6.0 (2026-07-24)
+~~~~~~~~~~~~~~~~~~~
+
+**Improvement**
+
+- Automatically scan the receipt for a Portuguese QR code when it is attached
+  to an existing draft expense, either through the "Attach Receipt" button or
+  the chatter.
+
+5.5.0 (2026-07-24)
+~~~~~~~~~~~~~~~~~~~
+
+**Improvement**
+
+- Add a manual "Scan QR" button to the expense form (same behaviour as the
+  vendor bill one), so receipts attached after the expense is created can
+  also be scanned. The scan now looks at every attachment of the expense,
+  not only the main one.
+
+5.4.0 (2026-07-23)
+~~~~~~~~~~~~~~~~~~~
+
+**Improvement**
+
+- Rework the QR code detection of vendor bill attachments: decode the images
+  embedded in PDFs at native resolution before falling back to page renders,
+  enhance low-quality scans (thermal receipts, photos), only pick the fiscal
+  QR code when a document carries several, and switch the decoder from
+  pyzbar/zbar to OpenCV WeChatQRCode (no OS-level dependency required).
+- Scan the Portuguese QR code of expense receipts too (Expenses upload):
+  fill the expense total amount, date, vendor and description from the QR
+  code data. New dependency on ptplus_expense.
+- The opencv-contrib-python-headless python package is an optional
+  dependency: when it is not installed the QR code scan is skipped with a
+  log warning, uploads and upgrades are never blocked.
+
 5.1.0 (2023-11-16)
 ~~~~~~~~~~~~~~~~~~~
 
