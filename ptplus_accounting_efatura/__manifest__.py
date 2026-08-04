@@ -10,14 +10,16 @@
     "author": "Exo Software",
     "website": "https://exosoftware.pt",
     "category": "Localization",
-    "version": "19.0.5.9.0",
+    "version": "19.0.5.11.1",
     "depends": ["ptplus", "ptplus_expense"],
     "external_dependencies": {
         "python": ["bs4", "requests_html", "pymupdf", "html5lib"],
     },
+    "post_init_hook": "post_init_hook",
     "data": [
         "security/ir.model.access.csv",
         "security/efatura_security.xml",
+        "views/l10n_pt_account_efatura_tax_mapping.xml",
         "views/l10n_pt_account_efatura.xml",
         "views/res_partner_views.xml",
         "views/account_move_views.xml",
@@ -29,7 +31,9 @@
     "assets": {
         "web.assets_backend": [
             "/ptplus_accounting_efatura/static/src/js/efatura_tree_extend.js",
+            "/ptplus_accounting_efatura/static/src/js/efatura_mapping_missing_field.js",
             "/ptplus_accounting_efatura/static/src/xml/efatura_list_button.xml",
+            "/ptplus_accounting_efatura/static/src/xml/efatura_mapping_missing_field.xml",
         ],
     },
     "demo": [],
