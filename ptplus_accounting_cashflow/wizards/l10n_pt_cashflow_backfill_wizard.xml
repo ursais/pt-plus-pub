@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="l10n_pt_cashflow_backfill_wizard_form" model="ir.ui.view">
+        <field name="name">l10n_pt.cashflow.backfill.wizard.form</field>
+        <field name="model">l10n_pt.cashflow.backfill.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Classify Cash Flows">
+                <header>
+                    <button
+                        name="action_apply"
+                        string="Apply"
+                        type="object"
+                        class="btn-primary"
+                        data-hotkey="q"
+                        invisible="not line_ids"
+                    />
+                    <button
+                        name="action_accept_all"
+                        string="Accept All Suggestions"
+                        type="object"
+                        invisible="not line_ids"
+                    />
+                    <button
+                        name="action_classify_selected"
+                        string="Classify Selected Together"
+                        type="object"
+                        invisible="not line_ids"
+                    />
+                </header>
+                <sheet>
+                    <field name="company_id" invisible="1" />
+                    <div class="oe_title">
+                        <h1>Classify Cash Flows</h1>
+                        <p
+                            class="text-muted"
+                        >The movements below are missing their cash flow classification. Accept, reject or edit the suggestions of the distribution models and classify the rest: only accepted or edited values are applied.</p>
+                    </div>
+                    <div
+                        class="alert alert-success"
+                        role="status"
+                        invisible="line_ids"
+                    >There are no bank/cash movements to classify.</div>
+                    <field name="line_ids" nolabel="1" invisible="not line_ids">
+                        <list
+                            editable="bottom"
+                            create="0"
+                            delete="0"
+                            open_form_view="1"
+                            decoration-warning="l10n_pt_cashflow_to_classify"
+                            decoration-info="distribution_origin == 'suggestion'"
+                            decoration-success="distribution_origin in ('accepted', 'edited')"
+                            decoration-muted="distribution_origin == 'rejected'"
+                        >
+                            <field name="merged" column_invisible="1" />
+                            <field name="company_currency_id" column_invisible="1" />
+                            <field
+                                name="l10n_pt_cashflow_required"
+                                column_invisible="1"
+                            />
+                            <field
+                                name="l10n_pt_cashflow_to_classify"
+                                column_invisible="1"
+                            />
+                            <field name="selected" />
+                            <field name="date" readonly="1" />
+                            <field name="journal_id" readonly="1" optional="show" />
+                            <field name="move_name" readonly="1" />
+                            <field name="label" readonly="1" optional="show" />
+                            <field name="partner_id" readonly="1" optional="show" />
+                            <field
+                                name="document_ids"
+                                widget="many2many_tags"
+                                readonly="1"
+                            />
+                            <button
+                                name="action_view_documents"
+                                type="object"
+                                icon="fa-external-link"
+                                title="View the reconciled documents"
+                                invisible="not document_ids"
+                            />
+                            <field name="balance" readonly="1" sum="Total" />
+                            <field
+                                name="l10n_pt_cashflow_distribution"
+                                widget="l10n_pt_cashflow_distribution"
+                                options="{'amount_field': 'balance'}"
+                                readonly="merged"
+                            />
+                            <field name="suggested_distribution" column_invisible="1" />
+                            <field name="distribution_origin" column_invisible="1" />
+                            <button
+                                name="action_accept"
+                                type="object"
+                                icon="fa-check"
+                                title="Accept the suggestion"
+                                invisible="distribution_origin not in ('suggestion', 'rejected')"
+                            />
+                            <button
+                                name="action_reject"
+                                type="object"
+                                icon="fa-times"
+                                title="Reject the suggestion"
+                                invisible="distribution_origin not in ('suggestion', 'accepted')"
+                            />
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Movement detail: row dialog and full-page navigation -->
+    <record id="l10n_pt_cashflow_backfill_wizard_line_form" model="ir.ui.view">
+        <field name="name">l10n_pt.cashflow.backfill.wizard.line.form</field>
+        <field name="model">l10n_pt.cashflow.backfill.wizard.line</field>
+        <field name="arch" type="xml">
+            <form string="Classify Cash Flow Movement">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_documents"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-file-text-o"
+                            invisible="not document_count"
+                        >
+                            <field
+                                name="document_count"
+                                widget="statinfo"
+                                string="Documents"
+                            />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="move_name" readonly="1" />
+                        </h1>
+                        <div class="text-muted">
+                            <field name="label" readonly="1" />
+                        </div>
+                    </div>
+                    <group>
+                        <group string="Movement">
+                            <field name="date" readonly="1" />
+                            <field name="journal_id" readonly="1" />
+                            <field name="partner_id" readonly="1" />
+                        </group>
+                        <group string="Classification">
+                            <field name="merged" invisible="1" />
+                            <field name="company_currency_id" invisible="1" />
+                            <field name="l10n_pt_cashflow_required" invisible="1" />
+                            <field name="l10n_pt_cashflow_to_classify" invisible="1" />
+                            <field name="balance" readonly="1" />
+                            <field
+                                name="l10n_pt_cashflow_distribution"
+                                widget="l10n_pt_cashflow_distribution"
+                                options="{'amount_field': 'balance'}"
+                                readonly="merged"
+                            />
+                        </group>
+                    </group>
+                    <separator
+                        string="Lines to Classify"
+                        invisible="not document_line_ids"
+                    />
+                    <field
+                        name="document_line_ids"
+                        nolabel="1"
+                        invisible="not document_line_ids"
+                    >
+                        <list editable="bottom" create="0" delete="0">
+                            <field name="move_line_id" column_invisible="1" />
+                            <field name="movement_line_id" column_invisible="1" />
+                            <field
+                                name="movement_name"
+                                readonly="1"
+                                column_invisible="not parent.merged"
+                            />
+                            <field name="document_id" readonly="1" />
+                            <field name="product_id" readonly="1" optional="show" />
+                            <field name="name" readonly="1" />
+                            <field name="quantity" readonly="1" optional="show" />
+                            <field name="currency_id" column_invisible="1" />
+                            <field name="price_total" readonly="1" sum="Total" />
+                            <field name="company_currency_id" column_invisible="1" />
+                            <field name="amount" sum="Total" />
+                            <field name="category_id" options="{'no_create': True}" />
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- The menu opens the wizard through action_open, already saved -->
+    <record
+        id="l10n_pt_cashflow_backfill_wizard_server_action"
+        model="ir.actions.server"
+    >
+        <field name="name">Classify Cash Flows</field>
+        <field name="model_id" ref="model_l10n_pt_cashflow_backfill_wizard" />
+        <field name="state">code</field>
+        <field name="code">action = model.action_open()</field>
+    </record>
+
+    <menuitem
+        id="l10n_pt_cashflow_backfill_wizard_menu"
+        parent="account.account_audit_control_menu"
+        sequence="50"
+        action="l10n_pt_cashflow_backfill_wizard_server_action"
+        groups="ptplus_accounting_cashflow.group_l10n_pt_cashflow"
+    />
+</odoo>

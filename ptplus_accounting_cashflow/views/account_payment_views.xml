@@ -1,35 +1,52 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
-    <record id="view_account_payment_form" model="ir.ui.view">
-        <field name="name">account.payment.form</field>
+    <record id="view_account_payment_form_pt_cashflow" model="ir.ui.view">
+        <field name="name">account.payment.form.pt.cashflow</field>
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_form" />
         <field name="arch" type="xml">
-            <field name="communication" position="after">
-                <field name="cashflow_id" options="{'no_create': True}" />
-            </field>
+            <xpath expr="//sheet" position="before">
+                <field name="l10n_pt_cashflow_to_classify" invisible="1" />
+                <div
+                    class="alert alert-warning"
+                    role="alert"
+                    invisible="not l10n_pt_cashflow_to_classify"
+                    groups="ptplus_accounting_cashflow.group_l10n_pt_cashflow"
+                >
+                    This payment is missing the cash flow classification.
+                </div>
+            </xpath>
+            <xpath expr="//group[@name='group2']" position="inside">
+                <field name="company_currency_id" invisible="1" />
+                <field name="amount_company_currency_signed" invisible="1" />
+                <field name="l10n_pt_cashflow_required" invisible="1" />
+                <field
+                    name="l10n_pt_cashflow_distribution"
+                    widget="l10n_pt_cashflow_distribution"
+                    options="{'amount_field': 'amount_company_currency_signed'}"
+                    invisible="not l10n_pt_cashflow_required"
+                    groups="ptplus_accounting_cashflow.group_l10n_pt_cashflow"
+                />
+            </xpath>
         </field>
     </record>
 
-    <record id="view_account_payment_invoice_form" model="ir.ui.view">
-        <field name="name">account.payment.invoice.form</field>
-        <field name="model">account.payment</field>
-        <field name="inherit_id" ref="account.view_account_payment_invoice_form" />
+    <record id="view_account_payment_register_form_pt_cashflow" model="ir.ui.view">
+        <field name="name">account.payment.register.form.pt.cashflow</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form" />
         <field name="arch" type="xml">
-            <field name="communication" position="after">
-                <field name="cashflow_id" options="{'no_create': True}" />
-            </field>
-        </field>
-    </record>
-
-    <record id="view_account_payment_from_invoices" model="ir.ui.view">
-        <field name="name">account.register.payments.wizard</field>
-        <field name="model">account.register.payments</field>
-        <field name="inherit_id" ref="account.view_account_payment_from_invoices" />
-        <field name="arch" type="xml">
-            <field name="communication" position="after">
-                <field name="cashflow_id" options="{'no_create': True}" />
+            <field name="journal_id" position="after">
+                <field name="company_currency_id" invisible="1" />
+                <field name="l10n_pt_cashflow_amount_signed" invisible="1" />
+                <field name="l10n_pt_cashflow_required" invisible="1" />
+                <field
+                    name="l10n_pt_cashflow_distribution"
+                    widget="l10n_pt_cashflow_distribution"
+                    options="{'amount_field': 'l10n_pt_cashflow_amount_signed'}"
+                    invisible="not l10n_pt_cashflow_required"
+                    groups="ptplus_accounting_cashflow.group_l10n_pt_cashflow"
+                />
             </field>
         </field>
     </record>

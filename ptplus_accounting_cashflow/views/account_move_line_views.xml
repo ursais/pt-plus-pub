@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_move_line_tree_pt_cashflow" model="ir.ui.view">
+        <field name="name">account.move.line.list.pt.cashflow</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute
+                    name="decoration-warning"
+                >l10n_pt_cashflow_to_classify</attribute>
+            </xpath>
+            <field name="analytic_distribution" position="after">
+                <field name="l10n_pt_cashflow_required" column_invisible="True" />
+                <field name="l10n_pt_cashflow_to_classify" column_invisible="True" />
+                <field
+                    name="l10n_pt_cashflow_distribution"
+                    widget="l10n_pt_cashflow_distribution"
+                    optional="hide"
+                    options="{'amount_field': 'balance'}"
+                    groups="ptplus_accounting_cashflow.group_l10n_pt_cashflow"
+                />
+                <button
+                    name="action_l10n_pt_cashflow_backfill"
+                    type="object"
+                    icon="fa-tags"
+                    title="Classify Cash Flows"
+                    invisible="not l10n_pt_cashflow_to_classify"
+                    groups="ptplus_accounting_cashflow.group_l10n_pt_cashflow"
+                />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_move_line_filter_pt_cashflow" model="ir.ui.view">
+        <field name="name">account.move.line.search.pt.cashflow</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_account_move_line_filter" />
+        <field name="arch" type="xml">
+            <filter name="posted" position="after">
+                <separator />
+                <filter
+                    string="Cash Flow To Classify [pt]"
+                    name="l10n_pt_cashflow_to_classify"
+                    domain="[('l10n_pt_cashflow_to_classify', '=', True)]"
+                    groups="ptplus_accounting_cashflow.group_l10n_pt_cashflow"
+                />
+            </filter>
+        </field>
+    </record>
+
+    <record id="view_move_line_cashflow_edit_form" model="ir.ui.view">
+        <field name="name">account.move.line.cashflow.edit.form</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <form string="Cash Flow Distribution">
+                <sheet>
+                    <group>
+                        <field name="account_id" readonly="1" />
+                        <field name="balance" readonly="1" />
+                        <field name="company_currency_id" invisible="1" />
+                        <field name="l10n_pt_cashflow_required" invisible="1" />
+                        <field
+                            name="l10n_pt_cashflow_distribution"
+                            widget="l10n_pt_cashflow_distribution"
+                            options="{'amount_field': 'balance'}"
+                        />
+                    </group>
+                </sheet>
+                <footer>
+                    <button
+                        string="Save"
+                        special="save"
+                        class="btn-primary"
+                        data-hotkey="q"
+                    />
+                    <button string="Discard" special="cancel" data-hotkey="x" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
