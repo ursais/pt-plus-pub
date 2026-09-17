@@ -92,6 +92,18 @@
         <field name="direction">any</field>
         <field name="company_id" eval="False" />
     </record>
+    <!-- The other leg of a movement between cash and bank accounts (also
+         the inter-banks transfer account, coded under 12 in the PT+ charts) -->
+    <record
+        id="cashflow_distribution_model_trin"
+        model="l10n_pt.cashflow.distribution.model"
+    >
+        <field name="sequence">100</field>
+        <field name="account_prefix">11,12</field>
+        <field name="category_id" ref="cashflow_category_trin" />
+        <field name="direction">any</field>
+        <field name="company_id" eval="False" />
+    </record>
 
     <!-- SNC Base chart - operating activities -->
     <record

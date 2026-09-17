@@ -6,7 +6,7 @@
 # pylint: disable=license-allowed, manifest-required-author
 {
     "name": "Portugal - Cash Flow",
-    "version": "19.0.5.0.0",
+    "version": "19.0.5.1.0",
     "license": "OPL-1",
     "depends": ["ptplus_accounting_reports"],
     "author": "Exo Software",
@@ -21,13 +21,12 @@
         "views/l10n_pt_cashflow_distribution_model_views.xml",
         "views/account_move_views.xml",
         "views/account_move_line_views.xml",
-        "views/account_payment_views.xml",
         "wizards/l10n_pt_cash_flow_statement_wizard.xml",
         "wizards/l10n_pt_cashflow_backfill_wizard.xml",
     ],
     "assets": {
         "web.assets_backend": [
-            "ptplus_accounting_cashflow/static/src/components/**/*",
+            "ptplus_accounting_cashflow/static/src/**/*",
         ],
     },
     "installable": True,

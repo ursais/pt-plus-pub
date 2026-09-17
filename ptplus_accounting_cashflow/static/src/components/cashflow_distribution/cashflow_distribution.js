@@ -38,6 +38,7 @@ export class CashflowDistribution extends Component {
     static props = {
         ...standardFieldProps,
         amount_field: {type: String},
+        hide_remainder: {type: Boolean, optional: true},
         placeholder: {type: String, optional: true},
     };
 
@@ -324,9 +325,16 @@ export class CashflowDistribution extends Component {
             .map((line) => ({
                 id: line.id,
                 text: `${line.categoryIesCode}: ${this.formatAmount(line.amount)}`,
+                // The tag carries the IES code; the tooltip spells the name
+                title: `${line.categoryDisplayName}: ${this.formatAmount(line.amount)}`,
                 colorIndex: line.categoryColor || 0,
                 onClick: (ev) => this.tagClicked(ev),
             }));
+        if (this.props.hide_remainder) {
+            // A suggestion column: what the models propose, nothing about
+            // what the movement itself still lacks
+            return tags;
+        }
         if (tags.length && this.isRequired && !this.isBalanced) {
             // Remainder tag on partial distributions. Its id must be truthy
             // and distinct from the line ids: the TagsList t-foreach keys on
@@ -573,9 +581,15 @@ export const cashflowDistribution = {
             type: "field",
             availableTypes: ["monetary"],
         },
+        {
+            label: _t("Hide remainder"),
+            name: "hide_remainder",
+            type: "boolean",
+        },
     ],
     extractProps: ({options, placeholder}) => ({
         amount_field: options.amount_field,
+        hide_remainder: Boolean(options.hide_remainder),
         placeholder: placeholder,
     }),
 };
