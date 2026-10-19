@@ -154,6 +154,67 @@ Known issues / Roadmap
 Changelog
 =========
 
+5.2.2 (2026-10-13)
+~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- The Cash Flow Statement now includes the company's branches even when they
+  are not enabled in the company selector.
+
+5.2.1 (2026-10-06)
+~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- In the document lines of the Classify Cash Flows window, the code and colour
+  of the proposed category are now labelled "Suggested IES Code" and
+  "Suggested Color", so they can be told apart from the chosen category's own
+  code and colour when picking fields for a list or an export.
+
+5.2.0 (2026-09-18)
+~~~~~~~~~~~~~~~~~~~
+
+**Improvement**
+
+- The Classify Cash Flows list no longer slows down as the work advances. On
+  a company with a large accounting history, asking for the movements still
+  to classify once the period was done, or for the ones already classified,
+  could leave the screen loading for a minute or more; both now open
+  immediately, whatever the volume and whatever share of the movements is
+  already classified.
+- Installing the module on a company with years of accounting no longer
+  takes hours.
+
+**Bugfixes**
+
+- The Classify Cash Flows list opens much faster on companies with a large
+  accounting history: each page of movements is now read in a handful of
+  steps instead of one per movement.
+- Accepting suggestions now works through a backlog of any size, 2000
+  movements at a time, and the notification says how many were classified and
+  how many are left, so accepting again carries on where it stopped. Asking
+  for everything at once, by selecting all the movements or by opening the
+  pending ones of a whole year from the statement, used to leave the screen
+  loading until the session gave up. When none of the movements left has a
+  suggestion, the notification says that too, instead of inviting a round
+  that would classify nothing.
+- A movement whose amount is changed after being classified goes back to
+  still to classify, on the movement and on its journal entry.
+- The list, its filters and the statement now agree on which movements count
+  as classified: a distribution off by less than half a cent was accepted in
+  one place and reported as missing in another.
+
+5.1.1 (2026-09-17)
+~~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- The Excel export of the statement now has one sheet per quadro, Q04-B and
+  Q0701, each with its own heading and its own rubrics, as the two pages of
+  the PDF. Until now the two quadros came out one after the other on a single
+  sheet, with nothing separating them.
+
 5.1.0 (2026-09-16)
 ~~~~~~~~~~~~~~~~~~~
 
